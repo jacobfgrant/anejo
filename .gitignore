@@ -1,0 +1,12 @@
+#.gitignore file for jacobfgrant/anejo
+
+#.DS_Store files
+.DS_Store
+
+
+# Python files
+*.pyc
+
+
+# Zip files
+*.zip
