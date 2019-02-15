@@ -8,5 +8,16 @@
 *.pyc
 
 
+# Terraform files
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+
+# VSCode files
+.vscode/
+
+
 # Zip files
 *.zip
