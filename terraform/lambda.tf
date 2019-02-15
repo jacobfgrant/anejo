@@ -65,7 +65,7 @@ resource "aws_lambda_function" "anejo_write_local_catalog" {
   description   = "Write local catalog and branches in Anejo repo"
   filename      = "${var.zip_file_path}"
   role          = "${aws_iam_role.anejo_iam_role.arn}"
-  handler       = "catalog_write.lambda_handler"
+  handler       = "write_local_catalog.lambda_handler"
   runtime       = "python3.7"
   timeout       = 300
 
