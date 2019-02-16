@@ -397,7 +397,7 @@ def lambda_handler(event, context):
 
             if download_packages and ('ServerMetadataURL' in product['CatalogEntry']):
                 unused_path = anejocommon.replicate_url_to_bucket(
-                    product['ServerMetadataURL'],
+                    product['CatalogEntry']['ServerMetadataURL'],
                     S3_BUCKET,
                     copy_only_if_missing=fast_scan
                 )

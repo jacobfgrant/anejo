@@ -82,13 +82,15 @@ def archive_catalog(catalog_path, catalog_url, s3_bucket, index_date):
     return archive_path
 
 
-def product_sync(catalog_url, run_time, product_key, product_info, queue_url):
+def product_sync(catalog_url, run_time, product_key, product_info, download_packages, fast_scan, queue_url):
     """Send event data to product_sync queue."""
     event_data = {
         'catalog_url': catalog_url,
         'run_time': run_time,
         'product_key': product_key,
-        'product_info': product_info
+        'product_info': product_info,
+        'download_packages': download_packages,
+        'fast_scan': fast_scan
     }
     return anejocommon.send_to_queue(event_data, queue_url)
 
@@ -133,7 +135,7 @@ def lambda_handler(event, context):
             'html',
             append_to_path='.apple'
         )
-        
+
         catalog = anejocommon.retrieve_url(catalog_url)
         try:
             catalog_plist = plistlib.readPlistFromBytes(catalog.data)
@@ -166,10 +168,18 @@ def lambda_handler(event, context):
             products = catalog_plist['Products']
             product_keys = list(products.keys())
 
-            # split into another function here
+            # Send to product_sync queue
             for product_key in product_keys:
                 product_info = anejocommon.compress_dict(products[product_key], True)
-                product_sync(catalog_url, run_time, product_key, product_info, PRODUCT_QUEUE_URL)
+                product_sync(
+                    catalog_url,
+                    run_time,
+                    product_key,
+                    product_info,
+                    download_packages,
+                    fast_scan,
+                    queue_url
+                )
 
         # Write our local (filtered) catalogs
         write_catalog(

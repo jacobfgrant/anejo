@@ -276,13 +276,14 @@ def replicate_url_to_bucket(url, s3_bucket, root_dir='html', append_to_path='', 
 
     if copy_only_if_missing and s3_file_exists(s3_file_path, s3_bucket):
         return s3_file_path
-
-    boto3.client('s3').upload_fileobj(
-        retrieve_url(url),
-        s3_bucket,
-        s3_file_path
-    )
-    return s3_file_path
+    else:
+        print("Replicating " + url + " to " + s3_file_path)
+        boto3.client('s3').upload_fileobj(
+            retrieve_url(url),
+            s3_bucket,
+            s3_file_path
+        )
+        return s3_file_path
 
 
 

@@ -76,7 +76,8 @@ def lambda_handler(event, context):
     try:
         event_info = event['Records'][0]
     except KeyError:
-        event_info = {}
+        event_info = event
+
     download_packages = event_info.get('download_packages', False)
     fast_scan = event_info.get('fast_scan', True)
 
