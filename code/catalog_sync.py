@@ -109,6 +109,7 @@ def lambda_handler(event, context):
     # Environmental Variables
     S3_BUCKET = anejocommon.set_env_var('S3_BUCKET')
     PRODUCT_QUEUE_URL = anejocommon.set_env_var('PRODUCT_QUEUE_URL')
+    PRODUCT_DOWNLOAD_QUEUE_URL = anejocommon.set_env_var('PRODUCT_DOWNLOAD_QUEUE_URL')
     WRITE_CATALOG_QUEUE_URL = anejocommon.set_env_var('WRITE_CATALOG_QUEUE_URL')
     WRITE_CATALOG_DELAY = anejocommon.set_env_var('WRITE_CATALOG_DELAY', 300)
 
@@ -167,6 +168,12 @@ def lambda_handler(event, context):
         if 'Products' in catalog_plist:
             products = catalog_plist['Products']
             product_keys = list(products.keys())
+
+            # Choose correct queue for product_sync
+            if download_packages:
+                queue_url = PRODUCT_DOWNLOAD_QUEUE_URL
+            else:
+                queue_url = PRODUCT_QUEUE_URL
 
             # Send to product_sync queue
             for product_key in product_keys:

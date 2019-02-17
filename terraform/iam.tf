@@ -139,8 +139,10 @@ resource "aws_iam_role_policy" "anejo_sqs_iam_policy" {
             ],
             "Resource": [
                 "${aws_sqs_queue.anejo_catalog_sync_queue.arn}",
-                "${aws_sqs_queue.anejo_write_local_catalog_queue.arn}",
-                "${aws_sqs_queue.anejo_product_sync_queue.arn}"
+                "${aws_sqs_queue.anejo_product_sync_queue.arn}",
+                "${aws_sqs_queue.anejo_product_sync_download_queue.arn}",
+                "${aws_sqs_queue.anejo_product_sync_failed_queue.arn}",
+                "${aws_sqs_queue.anejo_write_local_catalog_queue.arn}"
             ]
         },
         {
