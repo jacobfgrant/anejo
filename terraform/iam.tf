@@ -1,5 +1,7 @@
 ### Anejo – IAM Roles and Policies ###
 
+## IAM Roles ##
+
 # Anejo IAM Role
 resource "aws_iam_role" "anejo_iam_role" {
   name               = "anejo-lambda-role"
@@ -22,6 +24,8 @@ resource "aws_iam_role" "anejo_iam_role" {
 EOF
 }
 
+
+## IAM Policies ##
 
 # IAM Policy – CloudWatch
 resource "aws_iam_role_policy" "anejo_cloudwatch_iam_policy" {
@@ -154,4 +158,30 @@ resource "aws_iam_role_policy" "anejo_sqs_iam_policy" {
     ]
 }
 EOF
+}
+
+
+## IAM Policy Documents ##
+
+# Anejo S3 Bucket Policy Document
+data "aws_iam_policy_document" "anejo_s3_bucket_policy_document" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.anejo_repo_bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${aws_cloudfront_origin_access_identity.anejo_distribution_identity.iam_arn}"]
+    }
+  }
+
+  statement {
+    actions   = ["s3:ListBucket"]
+    resources = ["${aws_s3_bucket.anejo_repo_bucket.arn}"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${aws_cloudfront_origin_access_identity.anejo_distribution_identity.iam_arn}"]
+    }
+  }
 }

@@ -15,4 +15,8 @@ anejo_repo_bucket = ""
 
 ### Optional ###
 
-anejo_write_catalog_delay = ""
+anejo_distribution_aliases = []
+
+anejo_distribution_geo_restriction_whitelist = ["US", "CA", "GB", "DE"]
+
+anejo_write_catalog_delay = "300"
