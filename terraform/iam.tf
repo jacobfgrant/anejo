@@ -4,7 +4,7 @@
 
 # Anejo IAM Role
 resource "aws_iam_role" "anejo_iam_role" {
-  name               = "anejo-lambda-role"
+  name               = "anejo-lambda-role${local.name_extension}"
   description        = "Anejo Lambda role"
 
   assume_role_policy = <<EOF
@@ -29,7 +29,7 @@ EOF
 
 # IAM Policy – CloudWatch
 resource "aws_iam_role_policy" "anejo_cloudwatch_iam_policy" {
-  name   = "AnejoCloudWatchPolicy"
+  name   = "AnejoCloudWatchPolicy${local.name_extension}"
   role   = "${aws_iam_role.anejo_iam_role.id}"
 
   policy = <<EOF
@@ -53,7 +53,7 @@ EOF
 
 # IAM Policy – DynamoDB
 resource "aws_iam_role_policy" "anejo_dynamodb_iam_policy" {
-  name   = "AnejoDynamoDBPolicy"
+  name   = "AnejoDynamoDBPolicy${local.name_extension}"
   role   = "${aws_iam_role.anejo_iam_role.id}"
 
   policy = <<EOF
@@ -88,7 +88,7 @@ EOF
 
 # IAM Policy – S3
 resource "aws_iam_role_policy" "anejo_s3_iam_policy" {
-  name   = "AnejoS3Policy"
+  name   = "AnejoS3Policy${local.name_extension}"
   role   = "${aws_iam_role.anejo_iam_role.id}"
 
   policy = <<EOF
@@ -116,7 +116,7 @@ EOF
 
 # IAM Policy – SQS
 resource "aws_iam_role_policy" "anejo_sqs_iam_policy" {
-  name   = "AnejoSQSPolicy"
+  name   = "AnejoSQSPolicy${local.name_extension}"
   role   = "${aws_iam_role.anejo_iam_role.id}"
 
   policy = <<EOF

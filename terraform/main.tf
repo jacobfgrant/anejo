@@ -45,6 +45,26 @@ variable "anejo_write_catalog_delay" {
   default     = "300"
 }
 
+variable "anejo_environment" {
+  type        = "string"
+  description = "Environment (production, development, testing, etc.)"
+  default     = ""
+}
+
+
+### Configure local values ###
+
+locals {
+  name_extension = "${terraform.workspace == "default" ? "" : format("-%s", terraform.workspace)}"
+  #name_extension = "${format("-%s", terraform.workspace)}"
+  tags_map       = {
+    Name        = "Anejo"
+    Workspace   = "${terraform.workspace}"
+    Environment = "${var.anejo_environment}"
+  }
+}
+
+
 
 ### Configure the AWS Provider ###
 

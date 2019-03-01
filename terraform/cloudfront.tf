@@ -83,6 +83,8 @@ resource "aws_cloudfront_distribution" "anejo_distribution" {
     }
   }
 
+  tags = "${local.tags_map}"
+
   viewer_certificate {
     cloudfront_default_certificate = true
   }

@@ -2,7 +2,7 @@
 
 # Repo Sync Function
 resource "aws_lambda_function" "anejo_repo_sync" {
-  function_name = "anejo_repo_sync"
+  function_name = "anejo_repo_sync${local.name_extension}"
   description   = "Sync Anejo repo with Apple SUS"
   filename      = "${var.zip_file_path}"
   role          = "${aws_iam_role.anejo_iam_role.arn}"
@@ -12,16 +12,18 @@ resource "aws_lambda_function" "anejo_repo_sync" {
 
   environment {
     variables = {
-      S3_BUCKET         = "${var.anejo_repo_bucket}",
+      S3_BUCKET         = "${aws_s3_bucket.anejo_repo_bucket.id}",
       CATALOG_QUEUE_URL = "${aws_sqs_queue.anejo_catalog_sync_queue.id}"
     }
   }
+
+  tags = "${local.tags_map}"
 }
 
 
 # Catalog Sync Function
 resource "aws_lambda_function" "anejo_catalog_sync" {
-  function_name = "anejo_catalog_sync"
+  function_name = "anejo_catalog_sync${local.name_extension}"
   description   = "Replicate Apple SUS catalog to Anejo repo"
   filename      = "${var.zip_file_path}"
   role          = "${aws_iam_role.anejo_iam_role.arn}"
@@ -31,19 +33,21 @@ resource "aws_lambda_function" "anejo_catalog_sync" {
 
   environment {
     variables = {
-      S3_BUCKET                  = "${var.anejo_repo_bucket}",
+      S3_BUCKET                  = "${aws_s3_bucket.anejo_repo_bucket.id}",
       PRODUCT_QUEUE_URL          = "${aws_sqs_queue.anejo_product_sync_queue.id}",
       PRODUCT_DOWNLOAD_QUEUE_URL = "${aws_sqs_queue.anejo_product_sync_download_queue.id}",
       WRITE_CATALOG_QUEUE_URL    = "${aws_sqs_queue.anejo_write_local_catalog_queue.id}",
       WRITE_CATALOG_DELAY        = "${var.anejo_write_catalog_delay}"
     }
   }
+
+  tags = "${local.tags_map}"
 }
 
 
 # Product Sync Function
 resource "aws_lambda_function" "anejo_product_sync" {
-  function_name = "anejo_product_sync"
+  function_name = "anejo_product_sync${local.name_extension}"
   description   = "Replicate Apple SUS product to Anejo repo"
   filename      = "${var.zip_file_path}"
   role          = "${aws_iam_role.anejo_iam_role.arn}"
@@ -55,15 +59,17 @@ resource "aws_lambda_function" "anejo_product_sync" {
   environment {
     variables = {
       PRODUCT_INFO_TABLE = "${aws_dynamodb_table.anejo_product_info_metadata.id}",
-      S3_BUCKET          = "${var.anejo_repo_bucket}"
+      S3_BUCKET          = "${aws_s3_bucket.anejo_repo_bucket.id}"
     }
   }
+
+  tags = "${local.tags_map}"
 }
 
 
 # Product Sync/Download Function
 resource "aws_lambda_function" "anejo_product_sync_download" {
-  function_name = "anejo_product_sync_download"
+  function_name = "anejo_product_sync_download${local.name_extension}"
   description   = "Replicate Apple SUS product and packages to Anejo repo"
   filename      = "${var.zip_file_path}"
   role          = "${aws_iam_role.anejo_iam_role.arn}"
@@ -75,15 +81,17 @@ resource "aws_lambda_function" "anejo_product_sync_download" {
   environment {
     variables = {
       PRODUCT_INFO_TABLE = "${aws_dynamodb_table.anejo_product_info_metadata.id}",
-      S3_BUCKET          = "${var.anejo_repo_bucket}"
+      S3_BUCKET          = "${aws_s3_bucket.anejo_repo_bucket.id}"
     }
   }
+
+  tags = "${local.tags_map}"
 }
 
 
 # Write Local Catalog
 resource "aws_lambda_function" "anejo_write_local_catalog" {
-  function_name = "anejo_write_local_catalog"
+  function_name = "anejo_write_local_catalog${local.name_extension}"
   description   = "Write local catalog and branches in Anejo repo"
   filename      = "${var.zip_file_path}"
   role          = "${aws_iam_role.anejo_iam_role.arn}"
@@ -94,9 +102,11 @@ resource "aws_lambda_function" "anejo_write_local_catalog" {
   environment {
     variables = {
       CATALOG_BRANCHES_TABLE = "${aws_dynamodb_table.anejo_catalog_branches_metadata.id}",
-      S3_BUCKET              = "${var.anejo_repo_bucket}",
+      S3_BUCKET              = "${aws_s3_bucket.anejo_repo_bucket.id}",
     }
   }
+
+  tags = "${local.tags_map}"
 }
 
 

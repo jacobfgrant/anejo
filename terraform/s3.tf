@@ -2,9 +2,11 @@
 
 # Anejo Repo S3 Bucket
 resource "aws_s3_bucket" "anejo_repo_bucket" {
-  bucket        = "${var.anejo_repo_bucket}"
+  bucket        = "${var.anejo_repo_bucket}${local.name_extension}"
   acl           = "private"
   force_destroy = true
+
+  tags = "${local.tags_map}"
 }
 
 
