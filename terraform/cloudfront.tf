@@ -57,7 +57,7 @@ resource "aws_cloudfront_distribution" "anejo_distribution" {
 
   # Lambda@Edge URL Rewrite
   ordered_cache_behavior {
-    path_pattern     = "*index*.sucatalog"
+    path_pattern     = "/contents/catalog/index*.sucatalog"
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "${local.anejo_s3_origin_id}"
@@ -70,9 +70,14 @@ resource "aws_cloudfront_distribution" "anejo_distribution" {
       }
     }
 
+    viewer_protocol_policy = "allow-all"
+    min_ttl                = 0
+    default_ttl            = 60
+    max_ttl                = 600
+
     lambda_function_association {
       event_type   = "origin-request"
-      lambda_arn   = "${aws_lambda_function.example.qualified_arn}"
+      lambda_arn   = "${aws_lambda_function.anejo_url_rewrite.qualified_arn}"
       include_body = true
     }
   }

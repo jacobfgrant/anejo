@@ -2,7 +2,7 @@
 
 ## IAM Roles ##
 
-# Anejo IAM Role
+# Anejo IAM Lambda Role
 resource "aws_iam_role" "anejo_iam_role" {
   name               = "anejo-lambda-role${local.name_extension}"
   description        = "Anejo Lambda role"
@@ -24,8 +24,56 @@ resource "aws_iam_role" "anejo_iam_role" {
 EOF
 }
 
+# Anejo IAM Lambda@Edge Role
+resource "aws_iam_role" "anejo_iam_lambda_edge_role" {
+  name               = "anejo-lambda-edge-role${local.name_extension}"
+  description        = "Anejo Lambda@Edge role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": [
+          "edgelambda.amazonaws.com",
+          "lambda.amazonaws.com"
+        ]
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
 
 ## IAM Policies ##
+
+# IAM Policy (Edge) – CloudWatch
+resource "aws_iam_role_policy" "anejo_cloudwatch_edge_iam_policy" {
+  name   = "AnejoCloudWatchPolicyEdge${local.name_extension}"
+  role   = "${aws_iam_role.anejo_iam_lambda_edge_role.id}"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:logs:*:*:*"
+        }
+    ]
+} 
+EOF
+}
 
 # IAM Policy – CloudWatch
 resource "aws_iam_role_policy" "anejo_cloudwatch_iam_policy" {

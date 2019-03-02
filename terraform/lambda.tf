@@ -1,5 +1,7 @@
 ### Anejo – Lambda Functions ###
 
+## Lambda Functions ##
+
 # Repo Sync Function
 resource "aws_lambda_function" "anejo_repo_sync" {
   function_name = "anejo_repo_sync${local.name_extension}"
@@ -102,6 +104,7 @@ resource "aws_lambda_function" "anejo_write_local_catalog" {
   environment {
     variables = {
       CATALOG_BRANCHES_TABLE = "${aws_dynamodb_table.anejo_catalog_branches_metadata.id}",
+      PRODUCT_INFO_TABLE     = "${aws_dynamodb_table.anejo_product_info_metadata.id}",
       S3_BUCKET              = "${aws_s3_bucket.anejo_repo_bucket.id}",
     }
   }
@@ -109,6 +112,25 @@ resource "aws_lambda_function" "anejo_write_local_catalog" {
   tags = "${local.tags_map}"
 }
 
+
+# URL Rewrite - Lambda@Edge
+resource "aws_lambda_function" "anejo_url_rewrite" {
+  provider      = "aws.east"
+
+  function_name = "anejo_url_rewrite${local.name_extension}"
+  description   = "Rewrite URL request"
+  filename      = "${var.zip_file_path}"
+  role          = "${aws_iam_role.anejo_iam_lambda_edge_role.arn}"
+  handler       = "url_rewrite.handler"
+  runtime       = "nodejs8.10"
+  timeout       = 5
+  publish       = true
+
+  tags = "${local.tags_map}"
+}
+
+
+## Lambda Function Triggers ##
 
 # Catalog Sync Trigger
 resource "aws_lambda_event_source_mapping" "anejo_catalog_sync_trigger" {
