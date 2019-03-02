@@ -56,6 +56,7 @@ def lambda_handler(event, context):
     """Handler function for AWS Lambda."""
     # Environmental Variables
     CATALOG_BRANCHES_TABLE = anejocommon.set_env_var('CATALOG_BRANCHES_TABLE')
+    PRODUCT_INFO_TABLE = anejocommon.set_env_var('PRODUCT_INFO_TABLE')
     S3_BUCKET = anejocommon.set_env_var('S3_BUCKET')
 
     # Loop through event records
@@ -91,7 +92,8 @@ def lambda_handler(event, context):
             apple_bucket_catalog_path,
             catalog_plist,
             S3_BUCKET,
-            CATALOG_BRANCHES_TABLE
+            CATALOG_BRANCHES_TABLE,
+            PRODUCT_INFO_TABLE
         )
 
 

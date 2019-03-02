@@ -342,7 +342,7 @@ def rewrite_catalog_urls(catalog_plist, local_catalog_url_base):
 
 ### Branch Catalogs ###
 
-def write_branch_catalogs(local_catalog_path, s3_bucket, catalog_branches_table):
+def write_branch_catalogs(local_catalog_path, s3_bucket, catalog_branches_table, product_info_table):
     """Write out branch catalogs."""
     catalog_plist = read_plist_s3(local_catalog_path, s3_bucket)
     downloaded_products = catalog_plist['Products']
@@ -371,7 +371,7 @@ def write_branch_catalogs(local_catalog_path, s3_bucket, catalog_branches_table)
             #elif get_pref('LocalCatalogURLBase') and product_key in product_info:
             elif local_catalog_url_base:
                 try:
-                    product_info = boto3.resource('dynamodb').Table('AnejoProductInfo').get_item(
+                    product_info = boto3.resource('dynamodb').Table(product_info_table).get_item(
                         Key={
                             'product_key': product_key
                         }
@@ -417,7 +417,7 @@ def write_branch_catalogs(local_catalog_path, s3_bucket, catalog_branches_table)
 
 ### Local Catalogs ###
 
-def write_local_catalogs(apple_catalog_path, catalog_plist, s3_bucket, catalog_branches_table):
+def write_local_catalogs(apple_catalog_path, catalog_plist, s3_bucket, catalog_branches_table, product_info_table):
     """Write local catalogs to S3 based on the Apple catalog."""
     # Rewrite catalog URLs to point to local servers (instead of Apple's) 
     rewrite_catalog_urls(
@@ -463,7 +463,8 @@ def write_local_catalogs(apple_catalog_path, catalog_plist, s3_bucket, catalog_b
     write_branch_catalogs(
         local_catalog_path,
         s3_bucket,
-        catalog_branches_table
+        catalog_branches_table,
+        product_info_table
     )
 
 
