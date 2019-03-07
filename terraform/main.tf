@@ -51,6 +51,13 @@ variable "anejo_environment" {
   default     = ""
 }
 
+variable "anejo_http_500_response_pattern" {
+  type        = "string"
+  description = "Regex selection pattern for HTTP 500 Lambda integration response for Anejo API."
+  default     = ".*error"
+}
+
+
 
 ### Configure local values ###
 
