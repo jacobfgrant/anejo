@@ -32,7 +32,7 @@
 """
 Common Anejo Utilities
 
-Functions and utilities used my multiple anejo Lambda functions.
+Functions and utilities used my multiple Anejo Lambda functions.
 
 
 Author:  Jacob F. Grant
@@ -63,6 +63,18 @@ urllib3.disable_warnings()
 ###################
 #### Functions ####
 ###################
+
+
+### API Response Functions ###
+
+def generate_api_response(response_code, body):
+    """Return a properly formatted API response."""
+    return {
+        "isBase64Encoded": False,
+        "statusCode": response_code,
+        "headers": { "Content-Type": "application/json"},
+        "body": body
+    }
 
 
 ### AWS Utility Functions ###
@@ -146,12 +158,15 @@ def get_download_status(s3_bucket, download_status_path='metadata/DownloadStatus
     return download_status
 
 
-def get_catalog_branches(catalog_branches_table):
+def get_catalog_branches(catalog_branches_table, names_only=False):
     """Get list of catalog branches from DynamoDB metadata table."""
-    dynamodb_args = {
-        'Select': 'ALL_ATTRIBUTES',
-        'ConsistentRead': True
-    }
+    dynamodb_args = {'ConsistentRead': True}
+    if names_only:
+        dynamodb_args['Select'] = 'SPECIFIC_ATTRIBUTES'
+        dynamodb_args['ProjectionExpression'] = 'catalog_branch'
+    else:
+        dynamodb_args['Select'] = 'ALL_ATTRIBUTES'
+
     catalog_branches = []
     while True:
         request = boto3.resource('dynamodb').Table(catalog_branches_table).scan(**dynamodb_args)
@@ -164,9 +179,9 @@ def get_catalog_branches(catalog_branches_table):
     return catalog_branches
 
 
-def get_pref(pref_name, s3_bucket, prefs_path='metadata/Preferences.plist'):
-    """Return a preference from the preference plist in S3."""
-    default_prefs = {
+def get_default_prefs():
+    """Return a dictionary of default preferences"""
+    return {
         'AppleCatalogURLs': [
             ('http://swscan.apple.com/content/catalogs/'
              'index.sucatalog'),
@@ -202,6 +217,11 @@ def get_pref(pref_name, s3_bucket, prefs_path='metadata/Preferences.plist'):
         'PreferredLocalizations': ['English', 'en'],
         'LocalCatalogURLBase': ''
     }
+
+
+def get_pref(pref_name, s3_bucket, prefs_path='metadata/Preferences.plist'):
+    """Return a preference from the preference plist in S3."""
+    default_prefs = get_default_prefs()
     prefs = read_plist_s3(prefs_path, s3_bucket)
     if pref_name in prefs:
         return prefs[pref_name]
@@ -209,6 +229,13 @@ def get_pref(pref_name, s3_bucket, prefs_path='metadata/Preferences.plist'):
         return default_prefs[pref_name]
     else:
         return None
+
+
+def delete_pref(pref_name, s3_bucket, prefs_path='metadata/Preferences.plist'):
+    """Write a preference to the preference plist in S3."""
+    prefs_plist = read_plist_s3(prefs_path, s3_bucket)
+    prefs_plist.pop(pref_name, None)
+    write_plist_s3(prefs_plist, prefs_path, s3_bucket)
 
 
 def write_pref(pref_name, pref, s3_bucket, prefs_path='metadata/Preferences.plist'):
