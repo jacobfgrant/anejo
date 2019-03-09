@@ -8,7 +8,6 @@ A reimplementation of [Reposado](https://github.com/wdas/reposado) in Python 3 f
 Anejo is still under active development and is not production ready. You can, however, test the existing functionality. The easiest way to get stared is to use the provided [Terraform](https://www.terraform.io/) files to set up the AWS infrastructure.
 
 * Clone the Anejo repository to your machine
-* Create a .zip file of the contents of the `code/` directory
 * Create a `.tfvars` file with the necessary variables
 * Use `terraform apply` to stand up the AWS infrastructure
 
