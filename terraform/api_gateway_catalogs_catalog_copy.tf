@@ -1,6 +1,7 @@
 ### Anejo – API Gateway – Resource /catalogs/{catalog}/copy ###
 
-## API Gateway Resource /catalogs/{catalog}/copy ##
+
+## API Gateway Resource ##
 
 # API Gateway Resource
 resource "aws_api_gateway_resource" "anejo_api_catalogs_catalog_copy_resource" {

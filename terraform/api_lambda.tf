@@ -1,4 +1,4 @@
-### Anejo – API Module – Lambda Functions ###
+### Anejo – Lambda Functions – API ###
 
 ## Lambda Functions ##
 

@@ -1,12 +1,12 @@
 ### Anejo – CloudFront Distribution ###
 
-
+# Local reference values
 locals {
   anejo_s3_origin_id = "AnejoS3Origin"
 }
 
 
-
+# CloudFront Origin Access Identity
 resource "aws_cloudfront_origin_access_identity" "anejo_distribution_identity" {
   comment = "Origin Access Identity for Anejo S3 bucket origin."
 }

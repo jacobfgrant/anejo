@@ -1,6 +1,9 @@
-## API Resource - /catalogs ##
+### Anejo – API Gateway – Resource /catalogs ###
 
-# API Gateway Resource - /catalogs
+
+## API Gateway Resource ##
+
+# API Gateway Resource
 resource "aws_api_gateway_resource" "anejo_api_catalogs_resource" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   parent_id   = "${aws_api_gateway_rest_api.anejo_api_gateway.root_resource_id}"
@@ -8,7 +11,9 @@ resource "aws_api_gateway_resource" "anejo_api_catalogs_resource" {
 }
 
 
-# API Gateway Method - /catalogs
+## API Gateway Resource – GET Method ##
+
+# API Gateway Method (GET)
 resource "aws_api_gateway_method" "anejo_api_catalogs_get" {
   rest_api_id   = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id   = "${aws_api_gateway_resource.anejo_api_catalogs_resource.id}"
@@ -17,7 +22,7 @@ resource "aws_api_gateway_method" "anejo_api_catalogs_get" {
 }
 
 
-# API Gateway Lambda Integration - /catalogs
+# API Gateway Lambda Integration (GET) – Anejo API Catalogs Lambda function
 resource "aws_api_gateway_integration" "anejo_api_catalogs_lambda_integration" {
   rest_api_id             = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id             = "${aws_api_gateway_resource.anejo_api_catalogs_resource.id}"
@@ -33,7 +38,7 @@ resource "aws_api_gateway_integration" "anejo_api_catalogs_lambda_integration" {
 }
 
 
-# API Gateway Lambda Permission - /catalogs
+# API Gateway Lambda Permission (GET) – Anejo API Catalogs Lambda function
 resource "aws_lambda_permission" "anejo_api_catalogs_lambda_permission" {
   statement_id_prefix  = "AllowAPIGatewayInvoke"
   action               = "lambda:InvokeFunction"
@@ -43,7 +48,7 @@ resource "aws_lambda_permission" "anejo_api_catalogs_lambda_permission" {
 }
 
 
-# API Gateway Method Response (200) - /catalogs
+# API Gateway Method Response (GET) – HTTP 200
 resource "aws_api_gateway_method_response" "api_catalogs_http_200_response" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id = "${aws_api_gateway_resource.anejo_api_catalogs_resource.id}"
@@ -52,7 +57,7 @@ resource "aws_api_gateway_method_response" "api_catalogs_http_200_response" {
 }
 
 
-# API Gateway Lambda Integration Response (200) - /catalogs
+# API Gateway Lambda Integration Response (GET) – HTTP 200
 resource "aws_api_gateway_integration_response" "api_catalogs_http_200_lambda_response" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id = "${aws_api_gateway_resource.anejo_api_catalogs_resource.id}"
@@ -63,7 +68,7 @@ resource "aws_api_gateway_integration_response" "api_catalogs_http_200_lambda_re
 }
 
 
-# API Gateway Method Response (500) - /catalogs
+# API Gateway Method Response (GET) – HTTP 500
 resource "aws_api_gateway_method_response" "api_catalogs_http_500_response" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id = "${aws_api_gateway_resource.anejo_api_catalogs_resource.id}"
@@ -72,7 +77,7 @@ resource "aws_api_gateway_method_response" "api_catalogs_http_500_response" {
 }
 
 
-# API Gateway Lambda Integration Response (500) - /catalogs
+# API Gateway Lambda Integration Response (GET) – HTTP 500
 resource "aws_api_gateway_integration_response" "api_catalogs_http_500_lambda_response" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id = "${aws_api_gateway_resource.anejo_api_catalogs_resource.id}"

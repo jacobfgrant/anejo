@@ -1,8 +1,9 @@
 ### Anejo – API Gateway – Resource /products/{product} ###
 
-## API Gateway Resource /products/{product} ##
 
-# API Gateway Resource
+## API Gateway Resource ##
+
+# API Gateway Resource – /products/{product}
 resource "aws_api_gateway_resource" "anejo_api_products_product_resource" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   parent_id   = "${aws_api_gateway_resource.anejo_api_products_resource.id}"
@@ -11,7 +12,7 @@ resource "aws_api_gateway_resource" "anejo_api_products_product_resource" {
 
 
 
-## API Gateway Resource /products/{product} – GET Method ##
+## API Gateway Resource – GET Method ##
 
 # API Gateway Method (GET)
 resource "aws_api_gateway_method" "anejo_api_products_product_get_method" {
@@ -91,7 +92,7 @@ resource "aws_api_gateway_integration_response" "api_products_product_get_http_5
 
 
 
-## API Gateway Resource /products/{product} – DELETE Method ##
+## API Gateway Resource – DELETE Method ##
 
 # API Gateway Method (DELETE)
 resource "aws_api_gateway_method" "anejo_api_products_product_delete" {

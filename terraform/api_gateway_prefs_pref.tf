@@ -1,6 +1,7 @@
 ### Anejo – API Gateway – Resource /prefs/{pref} ###
 
-## API Gateway Resource /prefs/{pref} ##
+
+## API Gateway Resource ##
 
 # API Gateway Resource
 resource "aws_api_gateway_resource" "anejo_api_prefs_pref_resource" {
@@ -11,7 +12,7 @@ resource "aws_api_gateway_resource" "anejo_api_prefs_pref_resource" {
 
 
 
-## API Gateway Resource /prefs/{pref} – GET Method ##
+## API Gateway Resource – GET Method ##
 
 # API Gateway Method (GET)
 resource "aws_api_gateway_method" "anejo_api_prefs_pref_get_method" {
@@ -91,7 +92,7 @@ resource "aws_api_gateway_integration_response" "api_prefs_pref_get_http_500_lam
 
 
 
-## API Gateway Resource /prefs/{pref} – DELETE Method ##
+## API Gateway Resource – DELETE Method ##
 
 # API Gateway Method (DELETE)
 resource "aws_api_gateway_method" "anejo_api_prefs_pref_delete" {
@@ -171,7 +172,7 @@ resource "aws_api_gateway_integration_response" "api_prefs_pref_delete_http_500_
 
 
 
-## API Gateway Resource /prefs/{pref} – POST Method ##
+## API Gateway Resource – POST Method ##
 
 # API Gateway Method (POST)
 resource "aws_api_gateway_method" "anejo_api_prefs_pref_post" {

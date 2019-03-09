@@ -1,4 +1,4 @@
-### Anejo – API Module – IAM Roles and Policies ###
+### Anejo – IAM Roles and Policies – API ###
 
 ## IAM Roles ##
 

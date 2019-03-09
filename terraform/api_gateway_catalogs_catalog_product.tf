@@ -1,6 +1,7 @@
 ### Anejo – API Gateway – Resource /catalogs/{catalog}/{product} ###
 
-## API Gateway Resource /catalogs/{catalog}/{product} ##
+
+## API Gateway Resource ##
 
 # API Gateway Resource
 resource "aws_api_gateway_resource" "anejo_api_catalogs_catalog_product_resource" {
@@ -11,7 +12,7 @@ resource "aws_api_gateway_resource" "anejo_api_catalogs_catalog_product_resource
 
 
 
-## API Gateway Resource /catalogs/{catalog}/{product} – DELETE Method ##
+## API Gateway Resource – DELETE Method ##
 
 # API Gateway Method (DELETE)
 resource "aws_api_gateway_method" "anejo_api_catalogs_catalog_product_delete" {
@@ -91,7 +92,7 @@ resource "aws_api_gateway_integration_response" "api_catalogs_catalog_product_de
 
 
 
-## API Gateway Resource /catalogs/{catalog}/{product} – POST Method ##
+## API Gateway Resource – POST Method ##
 
 # API Gateway Method (POST)
 resource "aws_api_gateway_method" "anejo_api_catalogs_catalog_product_post" {

@@ -1,6 +1,7 @@
 ### Anejo – API Gateway – Resource /catalogs/{catalog}/copy/{source} ###
 
-## API Gateway Resource /catalogs/{catalog}/copy/{source} ##
+
+## API Gateway Resource ##
 
 # API Gateway Resource
 resource "aws_api_gateway_resource" "anejo_api_catalogs_catalog_copy_source_resource" {
@@ -11,7 +12,7 @@ resource "aws_api_gateway_resource" "anejo_api_catalogs_catalog_copy_source_reso
 
 
 
-## API Gateway Resource /catalogs/{catalog}/copy/{source} – POST Method ##
+## API Gateway Resource – POST Method ##
 
 # API Gateway Method (POST)
 resource "aws_api_gateway_method" "anejo_api_catalogs_catalog_copy_source_post" {

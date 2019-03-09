@@ -1,6 +1,9 @@
-## API Resource - /products ##
+### Anejo – API Gateway – Resource /products ###
 
-# API Gateway Resource - /products
+
+## API Gateway Resource ##
+
+# API Gateway Resource – /products
 resource "aws_api_gateway_resource" "anejo_api_products_resource" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   parent_id   = "${aws_api_gateway_rest_api.anejo_api_gateway.root_resource_id}"
@@ -8,7 +11,9 @@ resource "aws_api_gateway_resource" "anejo_api_products_resource" {
 }
 
 
-# API Gateway Method - /products
+## API Gateway Resource – GET Method ##
+
+# API Gateway Method (GET)
 resource "aws_api_gateway_method" "anejo_api_products_get" {
   rest_api_id   = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id   = "${aws_api_gateway_resource.anejo_api_products_resource.id}"
@@ -17,7 +22,7 @@ resource "aws_api_gateway_method" "anejo_api_products_get" {
 }
 
 
-# API Gateway Lambda Integration - /products
+# API Gateway Lambda Integration (GET) – Anejo API Products Lambda function
 resource "aws_api_gateway_integration" "anejo_api_products_lambda_integration" {
   rest_api_id             = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id             = "${aws_api_gateway_resource.anejo_api_products_resource.id}"
@@ -33,7 +38,7 @@ resource "aws_api_gateway_integration" "anejo_api_products_lambda_integration" {
 }
 
 
-# API Gateway Lambda Permission - /products
+# API Gateway Lambda Permission (GET) – Anejo API Products Lambda function
 resource "aws_lambda_permission" "anejo_api_products_lambda_permission" {
   statement_id_prefix  = "AllowAPIGatewayInvoke"
   action               = "lambda:InvokeFunction"
@@ -43,7 +48,7 @@ resource "aws_lambda_permission" "anejo_api_products_lambda_permission" {
 }
 
 
-# API Gateway Method Response (200) - /products
+# API Gateway Method Response (GET) – HTTP 200
 resource "aws_api_gateway_method_response" "api_products_http_200_response" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id = "${aws_api_gateway_resource.anejo_api_products_resource.id}"
@@ -52,7 +57,7 @@ resource "aws_api_gateway_method_response" "api_products_http_200_response" {
 }
 
 
-# API Gateway Lambda Integration Response (200) - /products
+# API Gateway Lambda Integration Response (GET) – HTTP 200
 resource "aws_api_gateway_integration_response" "api_products_http_200_lambda_response" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id = "${aws_api_gateway_resource.anejo_api_products_resource.id}"
@@ -63,7 +68,7 @@ resource "aws_api_gateway_integration_response" "api_products_http_200_lambda_re
 }
 
 
-# API Gateway Method Response (500) - /products
+# API Gateway Method Response (GET) – HTTP 500
 resource "aws_api_gateway_method_response" "api_products_http_500_response" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id = "${aws_api_gateway_resource.anejo_api_products_resource.id}"
@@ -72,7 +77,7 @@ resource "aws_api_gateway_method_response" "api_products_http_500_response" {
 }
 
 
-# API Gateway Lambda Integration Response (500) - /products
+# API Gateway Lambda Integration Response (GET) – HTTP 500
 resource "aws_api_gateway_integration_response" "api_products_http_500_lambda_response" {
   rest_api_id = "${aws_api_gateway_rest_api.anejo_api_gateway.id}"
   resource_id = "${aws_api_gateway_resource.anejo_api_products_resource.id}"
