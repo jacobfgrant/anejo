@@ -78,7 +78,8 @@ def lambda_handler(event, context):
     except KeyError:
         event_info = event
 
-    download_packages = event_info.get('download_packages', False)
+    download_packages = (anejocommon.get_pref('download_packages', S3_BUCKET) or False)
+    download_packages = event_info.get('download_packages', download_packages)
     fast_scan = event_info.get('fast_scan', True)
 
     # Other Variables

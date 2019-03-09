@@ -77,7 +77,8 @@ def get_pref_value(pref_name, s3_bucket):
         response_code = 200
     else:
         response_code = 404
-    return anejocommon.generate_api_response(response_code, pref)
+    response = {pref_name: updated_pref}
+    return anejocommon.generate_api_response(response_code, response)
 
 
 def delete_pref_value(pref_name, s3_bucket):
@@ -94,7 +95,8 @@ def set_pref_value(pref_name, pref, s3_bucket):
         response_code = 200
     else:
         response_code = 500
-    return anejocommon.generate_api_response(response_code, updated_pref)
+    response = {pref_name: updated_pref}
+    return anejocommon.generate_api_response(response_code, response)
 
 
 
