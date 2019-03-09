@@ -26,7 +26,7 @@ resource "aws_lambda_function" "anejo_repo_sync" {
   runtime          = "python3.7"
   timeout          = 30
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {
@@ -50,7 +50,7 @@ resource "aws_lambda_function" "anejo_catalog_sync" {
   runtime          = "python3.7"
   timeout          = 600
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {
@@ -78,7 +78,7 @@ resource "aws_lambda_function" "anejo_product_sync" {
   timeout          = 300
   memory_size      = 128
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {
@@ -103,7 +103,7 @@ resource "aws_lambda_function" "anejo_product_sync_download" {
   timeout          = 900
   memory_size      = 512
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {
@@ -127,7 +127,7 @@ resource "aws_lambda_function" "anejo_write_local_catalog" {
   runtime          = "python3.7"
   timeout          = 300
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {

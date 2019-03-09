@@ -13,7 +13,7 @@ resource "aws_lambda_function" "anejo_api_catalogs" {
   runtime          = "python3.7"
   timeout          = 30
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {
@@ -37,7 +37,7 @@ resource "aws_lambda_function" "anejo_api_prefs" {
   runtime          = "python3.7"
   timeout          = 30
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {
@@ -60,7 +60,7 @@ resource "aws_lambda_function" "anejo_api_products" {
   runtime          = "python3.7"
   timeout          = 30
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {
@@ -85,7 +85,7 @@ resource "aws_lambda_function" "anejo_api_sync" {
   runtime          = "python3.7"
   timeout          = 30
 
-  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.arn}"]
 
   environment {
     variables = {
