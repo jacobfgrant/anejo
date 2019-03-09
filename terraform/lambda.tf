@@ -1,16 +1,32 @@
 ### Anejo – Lambda Functions ###
 
+## Lambda Layers ##
+
+resource "aws_lambda_layer_version" "anejocommon_layer" {
+  layer_name       = "anejocommon${local.name_extension}"
+  description      = "Functions and utilities used my multiple Anejo Lambda functions."
+  filename         = "${data.archive_file.anejocommon.output_path}"
+  source_code_hash = "${data.archive_file.anejocommon.output_base64sha256}"
+  license_info     = "https://github.com/jacobfgrant/anejo/blob/master/LICENSE"
+
+  compatible_runtimes = ["python3.7"]
+}
+
+
 ## Lambda Functions ##
 
 # Repo Sync Function
 resource "aws_lambda_function" "anejo_repo_sync" {
-  function_name = "anejo_repo_sync${local.name_extension}"
-  description   = "Sync Anejo repo with Apple SUS"
-  filename      = "${var.zip_file_path}"
-  role          = "${aws_iam_role.anejo_iam_role.arn}"
-  handler       = "repo_sync.lambda_handler"
-  runtime       = "python3.7"
-  timeout       = 60
+  function_name    = "anejo_repo_sync${local.name_extension}"
+  description      = "Sync Anejo repo with Apple SUS"
+  filename         = "${data.archive_file.anejo_repo_sync.output_path}"
+  source_code_hash = "${data.archive_file.anejo_repo_sync.output_base64sha256}"
+  role             = "${aws_iam_role.anejo_iam_role.arn}"
+  handler          = "repo_sync.lambda_handler"
+  runtime          = "python3.7"
+  timeout          = 30
+
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
 
   environment {
     variables = {
@@ -25,13 +41,16 @@ resource "aws_lambda_function" "anejo_repo_sync" {
 
 # Catalog Sync Function
 resource "aws_lambda_function" "anejo_catalog_sync" {
-  function_name = "anejo_catalog_sync${local.name_extension}"
-  description   = "Replicate Apple SUS catalog to Anejo repo"
-  filename      = "${var.zip_file_path}"
-  role          = "${aws_iam_role.anejo_iam_role.arn}"
-  handler       = "catalog_sync.lambda_handler"
-  runtime       = "python3.7"
-  timeout       = 600
+  function_name    = "anejo_catalog_sync${local.name_extension}"
+  description      = "Replicate Apple SUS catalog to Anejo repo"
+  filename         = "${data.archive_file.anejo_catalog_sync.output_path}"
+  source_code_hash = "${data.archive_file.anejo_catalog_sync.output_base64sha256}"
+  role             = "${aws_iam_role.anejo_iam_role.arn}"
+  handler          = "catalog_sync.lambda_handler"
+  runtime          = "python3.7"
+  timeout          = 600
+
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
 
   environment {
     variables = {
@@ -49,14 +68,17 @@ resource "aws_lambda_function" "anejo_catalog_sync" {
 
 # Product Sync Function
 resource "aws_lambda_function" "anejo_product_sync" {
-  function_name = "anejo_product_sync${local.name_extension}"
-  description   = "Replicate Apple SUS product to Anejo repo"
-  filename      = "${var.zip_file_path}"
-  role          = "${aws_iam_role.anejo_iam_role.arn}"
-  handler       = "product_sync.lambda_handler"
-  runtime       = "python3.7"
-  timeout       = 300
-  memory_size   = 128
+  function_name    = "anejo_product_sync${local.name_extension}"
+  description      = "Replicate Apple SUS product to Anejo repo"
+  filename         = "${data.archive_file.anejo_product_sync.output_path}"
+  source_code_hash = "${data.archive_file.anejo_product_sync.output_base64sha256}"
+  role             = "${aws_iam_role.anejo_iam_role.arn}"
+  handler          = "product_sync.lambda_handler"
+  runtime          = "python3.7"
+  timeout          = 300
+  memory_size      = 128
+
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
 
   environment {
     variables = {
@@ -71,14 +93,17 @@ resource "aws_lambda_function" "anejo_product_sync" {
 
 # Product Sync/Download Function
 resource "aws_lambda_function" "anejo_product_sync_download" {
-  function_name = "anejo_product_sync_download${local.name_extension}"
-  description   = "Replicate Apple SUS product and packages to Anejo repo"
-  filename      = "${var.zip_file_path}"
-  role          = "${aws_iam_role.anejo_iam_role.arn}"
-  handler       = "product_sync.lambda_handler"
-  runtime       = "python3.7"
-  timeout       = 900
-  memory_size   = 512
+  function_name    = "anejo_product_sync_download${local.name_extension}"
+  description      = "Replicate Apple SUS product and packages to Anejo repo"
+  filename         = "${data.archive_file.anejo_product_sync.output_path}"
+  source_code_hash = "${data.archive_file.anejo_product_sync.output_base64sha256}"
+  role             = "${aws_iam_role.anejo_iam_role.arn}"
+  handler          = "product_sync.lambda_handler"
+  runtime          = "python3.7"
+  timeout          = 900
+  memory_size      = 512
+
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
 
   environment {
     variables = {
@@ -93,13 +118,16 @@ resource "aws_lambda_function" "anejo_product_sync_download" {
 
 # Write Local Catalog
 resource "aws_lambda_function" "anejo_write_local_catalog" {
-  function_name = "anejo_write_local_catalog${local.name_extension}"
-  description   = "Write local catalog and branches in Anejo repo"
-  filename      = "${var.zip_file_path}"
-  role          = "${aws_iam_role.anejo_iam_role.arn}"
-  handler       = "write_local_catalog.lambda_handler"
-  runtime       = "python3.7"
-  timeout       = 300
+  function_name    = "anejo_write_local_catalog${local.name_extension}"
+  description      = "Write local catalog and branches in Anejo repo"
+  filename         = "${data.archive_file.anejo_write_local_catalog.output_path}"
+  source_code_hash = "${data.archive_file.anejo_write_local_catalog.output_base64sha256}"
+  role             = "${aws_iam_role.anejo_iam_role.arn}"
+  handler          = "write_local_catalog.lambda_handler"
+  runtime          = "python3.7"
+  timeout          = 300
+
+  layers = ["${aws_lambda_layer_version.anejocommon_layer.layer_arn}"]
 
   environment {
     variables = {
@@ -117,14 +145,15 @@ resource "aws_lambda_function" "anejo_write_local_catalog" {
 resource "aws_lambda_function" "anejo_url_rewrite" {
   provider      = "aws.east"
 
-  function_name = "anejo_url_rewrite${local.name_extension}"
-  description   = "Rewrite URL request"
-  filename      = "${var.zip_file_path}"
-  role          = "${aws_iam_role.anejo_iam_lambda_edge_role.arn}"
-  handler       = "url_rewrite.handler"
-  runtime       = "nodejs8.10"
-  timeout       = 5
-  publish       = true
+  function_name    = "anejo_url_rewrite${local.name_extension}"
+  description      = "Rewrite URL request"
+  filename         = "${data.archive_file.anejo_url_rewrite.output_path}"
+  source_code_hash = "${data.archive_file.anejo_url_rewrite.output_base64sha256}"
+  role             = "${aws_iam_role.anejo_iam_lambda_edge_role.arn}"
+  handler          = "url_rewrite.handler"
+  runtime          = "nodejs8.10"
+  timeout          = 5
+  publish          = true
 
   tags = "${local.tags_map}"
 }

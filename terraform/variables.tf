@@ -1,4 +1,4 @@
-##### Anejo – Variables ######
+###### Anejo – Variables ######
 
 variable "aws_access_key" {
   type        = "string"
@@ -16,9 +16,10 @@ variable "aws_region" {
   default     = "us-west-1"
 }
 
-variable "zip_file_path" {
+variable "lambda_archive_dir" {
   type        = "string"
-  description = "Path to .zip file containing the Lambda function"
+  description = "Directory where Lambda function archives (.zip files) are stored."
+  default     = "../lambda_archives"
 }
 
 variable "anejo_repo_bucket" {
