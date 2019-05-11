@@ -327,43 +327,43 @@ def rewrite_url(full_url, local_catalog_url_base):
 
 def rewrite_product_urls(product, local_catalog_url_base):
     """Rewrites all URLs for a given product."""
-    if 'ServerMetadataURL' in product:
-        product['ServerMetadataURL'] = rewrite_url(
-            product['ServerMetadataURL'],
-            local_catalog_url_base
-        )
-    for package in product.get('Packages', []):
-        if 'URL' in package:
-            package['URL'] = rewrite_url(
-                package['URL'],
+    if local_catalog_url_base:
+        if 'ServerMetadataURL' in product:
+            product['ServerMetadataURL'] = rewrite_url(
+                product['ServerMetadataURL'],
                 local_catalog_url_base
             )
-        if 'MetadataURL' in package:
-            package['MetadataURL'] = rewrite_url(
-                package['MetadataURL'],
-                local_catalog_url_base
-            )
-        # Remove Digest (workaround for 10.8.2)
-        if 'Digest' in package:
-            del package['Digest']
+        for package in product.get('Packages', []):
+            if 'URL' in package:
+                package['URL'] = rewrite_url(
+                    package['URL'],
+                    local_catalog_url_base
+                )
+            if 'MetadataURL' in package:
+                package['MetadataURL'] = rewrite_url(
+                    package['MetadataURL'],
+                    local_catalog_url_base
+                )
+            # Remove Digest (workaround for 10.8.2)
+            if 'Digest' in package:
+                del package['Digest']
 
-    distributions = product['Distributions']
-    for dist_lang in distributions.keys():
-        distributions[dist_lang] = rewrite_url(
-            distributions[dist_lang],
-            local_catalog_url_base
-        )
+            distributions = product['Distributions']
+            for dist_lang in distributions.keys():
+                distributions[dist_lang] = rewrite_url(
+                    distributions[dist_lang],
+                    local_catalog_url_base
+                )
 
 
 def rewrite_catalog_urls(catalog_plist, local_catalog_url_base):
     """Rewrites all URLs in a given catalog to point to the local replica."""
-    if local_catalog_url_base is None:
-        return
-    if 'Products' in catalog_plist:
-        product_keys = list(catalog_plist['Products'].keys())
-        for product_key in product_keys:
-            product = catalog_plist['Products'][product_key]
-            rewrite_product_urls(product, local_catalog_url_base)
+    if local_catalog_url_base:
+        if 'Products' in catalog_plist:
+            product_keys = list(catalog_plist['Products'].keys())
+            for product_key in product_keys:
+                product = catalog_plist['Products'][product_key]
+                rewrite_product_urls(product, local_catalog_url_base)
 
 
 
