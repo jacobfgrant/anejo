@@ -84,8 +84,8 @@ def lambda_handler(event, context):
         try:
             catalog_plist = plistlib.readPlistFromBytes(catalog.data)
         except plistlib.InvalidFileException:
-            print("ERROR: Cannot read catalog plist")
-            return
+            print(f"ERROR: Cannot read catalog plist for {catalog_url}")
+            continue
 
         # Write our local (filtered) catalogs
         anejocommon.write_local_catalogs(

@@ -54,9 +54,10 @@ def get_all_prefs(s3_bucket, prefs_path='metadata/Preferences.plist'):
     prefs = anejocommon.read_plist_s3(prefs_path, s3_bucket)
 
     custom_prefs = list(prefs.keys())
+    available_prefs = list(default_prefs.keys())
     default_prefs_list = list(default_prefs.keys())
 
-    for pref in default_prefs.keys():
+    for pref in available_prefs:
         if pref in prefs.keys():
             default_prefs_list.remove(pref)
         else:
@@ -66,6 +67,7 @@ def get_all_prefs(s3_bucket, prefs_path='metadata/Preferences.plist'):
         'prefs': prefs,
         'custom_prefs': custom_prefs,
         'default_prefs': default_prefs_list
+        'available_prefs': available_prefs
     }
     return anejocommon.generate_api_response(200, prefs_response)
 
@@ -73,11 +75,17 @@ def get_all_prefs(s3_bucket, prefs_path='metadata/Preferences.plist'):
 def get_pref_value(pref_name, s3_bucket):
     """Return the value of a single preference"""
     pref = anejocommon.get_pref(pref_name, s3_bucket)
-    if pref:
+    if pref is not None:
+        is_default = (pref == anejocommon.get_default_prefs()[pref_name])
         response_code = 200
+        response = {
+            'name': pref_name,
+            'value': pref,
+            'is_default': is_default
+        }
     else:
         response_code = 404
-    response = {pref_name: updated_pref}
+        response = f"Preference '{pref_name}' not found"
     return anejocommon.generate_api_response(response_code, response)
 
 
@@ -89,13 +97,26 @@ def delete_pref_value(pref_name, s3_bucket):
 
 def set_pref_value(pref_name, pref, s3_bucket):
     """Return the value of a single preference"""
-    anejocommon.write_pref(pref_name, pref, s3_bucket)
-    updated_pref = anejocommon.get_pref(pref_name, s3_bucket)
-    if pref == updated_pref:
-        response_code = 200
+    default_prefs = anejocommon.get_default_prefs()
+    
+    if pref_name in default_prefs.keys():
+        if type(pref) == type(default_prefs[pref_name]):
+            anejocommon.write_pref(pref_name, pref, s3_bucket)
+            updated_pref = anejocommon.get_pref(pref_name, s3_bucket)
+
+                if pref == updated_pref:
+                    response_code = 200
+                    response = {pref_name: updated_pref}
+                else:
+                    response_code = 500
+                    response = 'Internal server error'
+        else:
+            response_code = 403
+            response = f'Invalid preference type ({type(default_prefs[pref_name])} required for {pref_name})'
     else:
-        response_code = 500
-    response = {pref_name: updated_pref}
+        response_code = 403
+        response = f"'{pref_name}' is not a valid preference"
+
     return anejocommon.generate_api_response(response_code, response)
 
 
